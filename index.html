@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>土耳其經典11日遊 - 行程與裝備指南</title>
+    <!-- 使用 Tailwind CSS 快速排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Vue 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
+        .tab-active { border-bottom: 2px solid #3b82f6; color: #3b82f6; font-weight: bold; }
+        .tab-inactive { color: #6b7280; }
+        .tab-inactive:hover { color: #374151; }
+        .laundry-highlight { background-color: #dbeafe; border-left: 4px solid #3b82f6; }
+    </style>
+</head>
+<body>
+    <div id="app" class="max-w-4xl mx-auto p-4 sm:p-6 mt-4 sm:mt-8 bg-white shadow-lg rounded-xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">🇹🇷 土耳其經典11日遊指南</h1>
+
+        <!-- 分頁導覽列 -->
+        <div class="flex border-b border-gray-200 mb-6 overflow-x-auto">
+            <button v-for="tab in tabs" :key="tab.id"
+                @click="currentTab = tab.id"
+                :class="['px-6 py-3 whitespace-nowrap focus:outline-none transition-colors duration-200', currentTab === tab.id ? 'tab-active' : 'tab-inactive']">
+                {{ tab.name }}
+            </button>
+        </div>
+
+        <!-- 分頁 1：每日行程 -->
+        <div v-show="currentTab === 'itinerary'">
+            <div class="space-y-4">
+                <div v-for="day in itinerary" :key="day.day" 
+                     :class="['p-4 rounded-lg border', day.laundry ? 'laundry-highlight' : 'bg-gray-50 border-gray-100']">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-lg font-bold text-gray-800">{{ day.date }} ({{ day.day }})</h3>
+                        <span v-if="day.laundry" class="text-xs font-bold bg-blue-500 text-white px-2 py-1 rounded-full">
+                            👕 最佳洗衣日
+                        </span>
+                    </div>
+                    <p class="text-gray-700 font-semibold mb-1">{{ day.route }}</p>
+                    <p class="text-gray-600 text-sm mb-2">{{ day.details }}</p>
+                    <p v-if="day.laundry" class="text-sm text-blue-700 mt-2">
+                        <strong>洗衣建議：</strong> {{ day.laundryReason }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分頁 2：服裝建議 -->
+        <div v-show="currentTab === 'clothing'">
+            <div class="space-y-4">
+                <div v-for="day in clothing" :key="day.day" class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">{{ day.date }} ({{ day.day }}) - {{ day.route }}</h3>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase">環境與規定</h4>
+                            <p class="text-gray-700 text-sm mt-1">{{ day.environment }}</p>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase">穿著建議</h4>
+                            <p class="text-gray-800 font-medium mt-1">{{ day.advice }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 分頁 3：裝備檢查清單 -->
+        <div v-show="currentTab === 'checklist'">
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                <p class="text-sm text-yellow-700">善用 Day 3 的洗衣時機，不需帶滿 11 天份的衣物。點擊核取方塊以確認準備狀態（資料不會因重新整理而消失，因純前端運作）。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div v-for="category in checklistCategories" :key="category.name">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 border-b pb-2">{{ category.name }}</h3>
+                    <ul class="space-y-2">
+                        <li v-for="item in category.items" :key="item.name" class="flex items-start">
+                            <input type="checkbox" v-model="item.checked" :id="item.name"
+                                class="mt-1 h-5 w-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
+                            <label :for="item.name" :class="['ml-3 text-gray-700 cursor-pointer', item.checked ? 'line-through text-gray-400' : '']">
+                                <span class="font-semibold">{{ item.name }}</span>
+                                <span class="block text-xs text-gray-500">{{ item.desc }}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                currentTab: 'itinerary',
+                tabs: [
+                    { id: 'itinerary', name: '📅 每日行程' },
+                    { id: 'clothing', name: '👕 服裝建議' },
+                    { id: 'checklist', name: '✅ 檢查清單' }
+                ],
+                itinerary: [
+                    { date: '6/25(四)', day: 'Day 1', route: '桃園機場 → 伊斯坦堡', details: '航班：土耳其航空 TK025 (21:45-05:05+1)', laundry: false },
+                    { date: '6/26(五)', day: 'Day 2', route: '伊斯坦堡 → 安卡拉', details: '凱莫爾陵寢紀念館、安卡拉城堡', laundry: false },
+                    { date: '6/27(六)', day: 'Day 3', route: '安卡拉 → 鹽湖 → 卡帕多奇亞', details: '鹽湖、土耳其石展示中心。入住卡帕多奇亞洞穴飯店。', laundry: true, laundryReason: '今明兩晚連泊洞穴飯店，卡帕多奇亞氣候乾燥，手洗的衣服晾在房內或通風處，有兩晚的時間絕對能乾透。' },
+                    { date: '6/28(日)', day: 'Day 4', route: '卡帕多奇亞', details: '熱氣球之旅、奇岩怪石、哥樂美露天博物館、地下城、手工地毯工廠', laundry: false },
+                    { date: '6/29(一)', day: 'Day 5', route: '卡帕多奇亞 → 孔亞', details: '古驛站、梅夫拉納博物館', laundry: false },
+                    { date: '6/30(二)', day: 'Day 6', route: '孔亞 → 阿斯班多斯 → 安塔利亞', details: '長途車(265km)。古羅馬水道橋、阿斯班多斯大劇場、杜登瀑布、舊城區', laundry: false },
+                    { date: '7/1(三)', day: 'Day 7', route: '安塔利亞 → 巴慕卡麗', details: '長途車(236km)。棉堡、希拉波里斯古城遺址', laundry: false },
+                    { date: '7/2(四)', day: 'Day 8', route: '巴慕卡麗 → 艾菲索斯 → 庫薩達西', details: '長途車(183km)。艾菲索斯古城、皮衣工廠', laundry: false },
+                    { date: '7/3(五)', day: 'Day 9', route: '庫薩達西 → 伊茲密爾 ✈️ 伊斯坦堡', details: '國內航班(TK2313)。博斯普魯斯海峽遊船、香料市集', laundry: false },
+                    { date: '7/4(六)', day: 'Day 10', route: '伊斯坦堡 → 機場', details: '巴拉特區、藍色清真寺、聖索菲亞、托普卡匹皇宮、塔克辛廣場', laundry: false },
+                    { date: '7/5(日)', day: 'Day 11', route: '伊斯坦堡 → 桃園機場', details: '航班：土耳其航空 TK024 (01:50-18:10)', laundry: false }
+                ],
+                clothing: [
+                    { date: '6/25', day: 'Day 1', route: '桃園 → 伊斯坦堡', environment: '長途夜機，機艙冷氣較強。', advice: '寬鬆長褲 + 短袖T恤 + 薄防風外套/連帽衫。' },
+                    { date: '6/26', day: 'Day 2', route: '伊斯坦堡 → 安卡拉', environment: '抵達後轉往市區，氣候溫暖；陵寢需服儀端莊。', advice: '短袖上衣 + 休閒長褲或及膝短褲 + 好走的運動鞋。' },
+                    { date: '6/27', day: 'Day 3', route: '安卡拉 → 鹽湖 → 卡帕', environment: '鹽湖毫無遮蔽，紫外線極強。', advice: '短袖上衣 + 透氣長褲 + 墨鏡 + 寬沿遮陽帽。' },
+                    { date: '6/28', day: 'Day 4', route: '卡帕多奇亞', environment: '清晨高空極冷(10-15°C)，日出後飆高溫；岩區多步行。', advice: '洋蔥式穿法：排汗內衣 + 戶外機能防風外套(日出後脫下) + 耐髒戶外長/短褲。' },
+                    { date: '6/29', day: 'Day 5', route: '卡帕多奇亞 → 孔亞', environment: '參觀博物館（清真寺規定：禁短褲無袖）。', advice: '男士：長褲+有袖上衣。女士：需備頭巾包覆頭髮，衣物需遮蔽肩膀與膝蓋。' },
+                    { date: '6/30', day: 'Day 6', route: '孔亞 → 安塔利亞', environment: '地中海沿岸，極度炎熱且潮濕。', advice: '最涼爽的短袖/短褲 + 運動涼鞋或透氣鞋。' },
+                    { date: '7/1', day: 'Day 7', route: '安塔利亞 → 棉堡', environment: '石灰岩強烈反射陽光，規定赤腳行走。', advice: '短袖短褲 + 極度依賴墨鏡防曬帽 + 易穿脫涼拖鞋 + 隨身小毛巾。' },
+                    { date: '7/2', day: 'Day 8', route: '巴慕卡麗 → 艾菲索斯', environment: '古城佔地廣大且「完全沒有樹蔭」，易中暑。', advice: '排汗短袖短褲 + 輕薄抗 UV 防曬外套。' },
+                    { date: '7/3', day: 'Day 9', route: '庫薩達西 ✈️ 伊斯坦堡', environment: '國內線搭機，下午海峽遊船風大。', advice: '都會休閒服飾 + 重新拿出 Day1 的薄防風外套。' },
+                    { date: '7/4', day: 'Day 10', route: '伊斯坦堡', environment: '藍色清真寺、聖索菲亞（嚴格服儀規定）。', advice: '男女皆必須穿著遮蓋腳踝的透氣長褲。女性必須使用頭巾。' },
+                    { date: '7/5', day: 'Day 11', route: '伊斯坦堡 → 桃園', environment: '長途夜機返家。', advice: '換回 Day 1 的搭機舒適服裝。' }
+                ],
+                checklistCategories: [
+                    {
+                        name: '👕 衣物類',
+                        items: [
+                            { name: '短袖排汗衣 / T恤 (5-6件)', desc: '配合 Day 3 洗衣輪替穿著', checked: false },
+                            { name: '透氣長褲 (2-3件)', desc: '應付兩天的清真寺規定、搭機與防曬', checked: false },
+                            { name: '短褲 (2-3件)', desc: '適用於安塔利亞、棉堡等炎熱地區', checked: false },
+                            { name: '防風/保暖外套 (1件)', desc: '戶外機能型最佳，清晨熱氣球、遊船與機上用', checked: false },
+                            { name: '抗 UV 薄外套 (1件)', desc: '夏日古城區防曬必備', checked: false },
+                            { name: '貼身衣物與襪子 (5-6套)', desc: 'Day 3 進行洗滌', checked: false }
+                        ]
+                    },
+                    {
+                        name: '👟 鞋包與配件',
+                        items: [
+                            { name: '好走的運動鞋 (1雙)', desc: '應付多數地形與古城石板路', checked: false },
+                            { name: '涼鞋或拖鞋 (1雙)', desc: '棉堡穿脫必備', checked: false },
+                            { name: '太陽眼鏡', desc: '棉堡與鹽湖極度刺眼，必備', checked: false },
+                            { name: '寬沿遮陽帽', desc: '土耳其夏日防曬神器', checked: false },
+                            { name: '頭巾 / 薄披肩', desc: '女性專用，進入清真寺包覆頭髮與肩膀', checked: false },
+                            { name: '隨身小毛巾', desc: '棉堡泡水後擦腳用', checked: false }
+                        ]
+                    }
+                ]
+            }
+        });
+    </script>
+</body>
+</html>
