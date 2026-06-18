@@ -3,156 +3,761 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>土耳其經典11日遊 - 行程與裝備指南</title>
-    <!-- 使用 Tailwind CSS 快速排版 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Vue 2 -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <title>土耳其經典11日遊 - 數位手冊與檢查清單</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
-        .tab-active { border-bottom: 2px solid #3b82f6; color: #3b82f6; font-weight: bold; }
-        .tab-inactive { color: #6b7280; }
-        .tab-inactive:hover { color: #374151; }
-        .laundry-highlight { background-color: #dbeafe; border-left: 4px solid #3b82f6; }
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --bg-slate: #f8fafc;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-slate);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 100%);
+            color: white;
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            max-width: 900px;
+            margin: 16px auto 0 auto;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .meta-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Tabs Interface */
+        .tabs-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 16px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 16px;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 8px;
+            font-size: 16px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Itinerary Styling */
+        .day-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .day-title {
+            font-size: 18px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .day-route {
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .attractions-list {
+            margin-left: 4px;
+            margin-bottom: 12px;
+        }
+
+        .attraction-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: var(--text-dark);
+        }
+
+        .attraction-item::before {
+            content: "📍";
+            font-size: 14px;
+        }
+
+        .flight-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            padding: 10px 12px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .meal-box {
+            background-color: #f8fafc;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .self-paid {
+            color: var(--accent-red);
+            font-weight: 700;
+            background-color: #fef2f2;
+            padding: 1px 6px;
+            border-radius: 4px;
+            border: 1px solid #fee2e2;
+        }
+
+        /* Warning Banners */
+        .alert-banner {
+            background-color: #fffbeb;
+            border-left: 4px solid var(--accent-orange);
+            padding: 10px 12px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            margin: 10px 0;
+            color: #92400e;
+        }
+
+        .alert-banner strong {
+            color: #78350f;
+        }
+
+        .alert-banner.strict {
+            background-color: #fef2f2;
+            border-left: 4px solid var(--accent-red);
+            color: #991b1b;
+        }
+
+        .alert-banner.strict strong {
+            color: #7f1d1d;
+        }
+
+        /* Checklist Styling */
+        .checklist-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .checklist-section h3 {
+            font-size: 16px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary);
+            padding-left: 8px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+        }
+
+        .check-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 3px;
+            cursor: pointer;
+        }
+
+        .check-text {
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .check-desc {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .cost-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .cost-item {
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+
+        /* Responsive utilities */
+        @media (max-width: 600px) {
+            header h1 { font-size: 20px; }
+            .day-header { flex-direction: column; gap: 4px; }
+            .tab-btn { font-size: 14px; padding: 10px 4px; }
+        }
     </style>
 </head>
 <body>
-    <div id="app" class="max-w-4xl mx-auto p-4 sm:p-6 mt-4 sm:mt-8 bg-white shadow-lg rounded-xl">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">🇹🇷 土耳其經典11日遊指南</h1>
 
-        <!-- 分頁導覽列 -->
-        <div class="flex border-b border-gray-200 mb-6 overflow-x-auto">
-            <button v-for="tab in tabs" :key="tab.id"
-                @click="currentTab = tab.id"
-                :class="['px-6 py-3 whitespace-nowrap focus:outline-none transition-colors duration-200', currentTab === tab.id ? 'tab-active' : 'tab-inactive']">
-                {{ tab.name }}
-            </button>
+    <header>
+        <h1>土耳其經典 11 日遊數位手冊</h1>
+        <p>出發日期：2026 / 06 / 25 (四)</p>
+        <div class="meta-grid">
+            <div class="meta-item">⏱️ <strong>時差：</strong> 台灣比土耳其快 5 小時</div>
+            <div class="meta-item">💵 <strong>匯率：</strong> 1 美金 ≈ 35 - 40 里拉</div>
+            <div class="meta-item">📞 <strong>領隊電話：</strong> 0919-788231</div>
+            <div class="meta-item">⏰ <strong>集合：</strong> 6/25 18:45 機場集合</div>
+        </div>
+    </header>
+
+    <div class="tabs-container">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('itinerary')">📅 每日詳細行程</button>
+            <button class="tab-btn" onclick="switchTab('checklist')">✅ 行前準備檢查清單</button>
         </div>
 
-        <!-- 分頁 1：每日行程 -->
-        <div v-show="currentTab === 'itinerary'">
-            <div class="space-y-4">
-                <div v-for="day in itinerary" :key="day.day" 
-                     :class="['p-4 rounded-lg border', day.laundry ? 'laundry-highlight' : 'bg-gray-50 border-gray-100']">
-                    <div class="flex justify-between items-center mb-2">
-                        <h3 class="text-lg font-bold text-gray-800">{{ day.date }} ({{ day.day }})</h3>
-                        <span v-if="day.laundry" class="text-xs font-bold bg-blue-500 text-white px-2 py-1 rounded-full">
-                            👕 最佳洗衣日
-                        </span>
-                    </div>
-                    <p class="text-gray-700 font-semibold mb-1">{{ day.route }}</p>
-                    <p class="text-gray-600 text-sm mb-2">{{ day.details }}</p>
-                    <p v-if="day.laundry" class="text-sm text-blue-700 mt-2">
-                        <strong>洗衣建議：</strong> {{ day.laundryReason }}
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 分頁 2：服裝建議 -->
-        <div v-show="currentTab === 'clothing'">
-            <div class="space-y-4">
-                <div v-for="day in clothing" :key="day.day" class="p-4 bg-gray-50 rounded-lg border border-gray-100">
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">{{ day.date }} ({{ day.day }}) - {{ day.route }}</h3>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="flex-1">
-                            <h4 class="text-sm font-semibold text-gray-500 uppercase">環境與規定</h4>
-                            <p class="text-gray-700 text-sm mt-1">{{ day.environment }}</p>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="text-sm font-semibold text-gray-500 uppercase">穿著建議</h4>
-                            <p class="text-gray-800 font-medium mt-1">{{ day.advice }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 分頁 3：裝備檢查清單 -->
-        <div v-show="currentTab === 'checklist'">
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                <p class="text-sm text-yellow-700">善用 Day 3 的洗衣時機，不需帶滿 11 天份的衣物。點擊核取方塊以確認準備狀態（資料不會因重新整理而消失，因純前端運作）。</p>
-            </div>
+        <div id="itinerary" class="tab-content active">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div v-for="category in checklistCategories" :key="category.name">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 border-b pb-2">{{ category.name }}</h3>
-                    <ul class="space-y-2">
-                        <li v-for="item in category.items" :key="item.name" class="flex items-start">
-                            <input type="checkbox" v-model="item.checked" :id="item.name"
-                                class="mt-1 h-5 w-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
-                            <label :for="item.name" :class="['ml-3 text-gray-700 cursor-pointer', item.checked ? 'line-through text-gray-400' : '']">
-                                <span class="font-semibold">{{ item.name }}</span>
-                                <span class="block text-xs text-gray-500">{{ item.desc }}</span>
-                            </label>
-                        </li>
-                    </ul>
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">6/25 (四) Day 1</div>
+                    <div class="day-route">桃園機場 ➔ 伊斯坦堡</div>
+                </div>
+                <div class="flight-box">
+                    ✈️ <strong>土耳其航空 TK025</strong><br>
+                    21:45 台北(桃園) 出發 ➔ 05:05 (+1日) 抵達伊斯坦堡
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">於桃園機場第1航廈指定櫃檯 18:45 準時集合</div>
+                    <div class="attraction-item">搭乘直飛班機前往土耳其，展開 11 天旅程</div>
+                </div>
+                <div class="alert-banner">
+                    💡 <strong>行李與飛行提醒：</strong> 飛行時間約 12 小時。機上會發放過夜包（含拖鞋、眼罩）。所有鋰電池、行動電源（需小於 100Wh）皆必須放置於隨身登機行李。
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：X</div>
+                    <div>🍽️ 午：X</div>
+                    <div>🍽️ 晚：機上精緻餐點</div>
                 </div>
             </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">6/26 (五) Day 2</div>
+                    <div class="day-route">伊斯坦堡 ➔ 安卡拉</div>
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">凱莫爾陵寢紀念館（Atatürk Mausoleum）</div>
+                    <div class="attraction-item">安卡拉城堡（Ankara Castle）</div>
+                </div>
+                <div class="alert-banner strict">
+                    ⚠️ <strong>服儀端莊與安檢提醒【國父陵寢】：</strong><br>
+                    第一天班機落地後將<strong>直接前往陵寢紀念館</strong>。請在搭機時或下機前換上符合規範的服裝：<br>
+                    1. 必須穿著<strong>長褲</strong>，上衣必須<strong>有袖</strong>（短袖OK，不可細肩帶或無袖）。<br>
+                    2. <strong>絕對禁止</strong>穿著拖鞋或涼鞋。<br>
+                    3. 進入需過安檢，請勿攜帶厚重雙肩背包，建議準備<strong>小於 A4 大小</strong>的隨身側背包。
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：機上</div>
+                    <div>🍽️ 午：依行程安排風味餐</div>
+                    <div>🍽️ 晚：飯店內用晚餐</div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">6/27 (六) Day 3</div>
+                    <div class="day-route">安卡拉 ➔ 鹽湖 ➔ 卡帕多奇亞</div>
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">鹽湖（Tuz Gölü）- 土耳其第二大湖</div>
+                    <div class="attraction-item">土耳其石展示中心</div>
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：飯店早餐</div>
+                    <div>🍽️ 午：土式烤翅風味餐</div>
+                    <div>🍽️ 晚：飯店內用晚餐</div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">6/28 (日) Day 4</div>
+                    <div class="day-route">卡帕多奇亞 全日停留</div>
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">熱氣球升空之旅（自費/視天候狀況而定）</div>
+                    <div class="attraction-item">奇岩怪石（駱駝岩、烏其沙、獵人谷）</div>
+                    <div class="attraction-item">哥樂美露天博物館（Goreme Open Air Museum）</div>
+                    <div class="attraction-item">凱馬克利地下城（Kaymakli Underground City）</div>
+                    <div class="attraction-item">手工地毯工廠</div>
+                </div>
+                <div class="alert-banner">
+                    💡 <strong>自費與行程提醒：</strong> 可自費報名四輪傳動吉普車之旅（約100美金，限身高120cm以上）。若成功搭乘熱氣球，請準備給駕駛員小費每人 200 里拉。
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：飯店早餐</div>
+                    <div>🍽️ 午：<span class="self-paid">方便遊玩，敬請自理【自理餐 1】</span></div>
+                    <div>🍽️ 晚：飯店內用晚餐</div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">6/29 (一) Day 5</div>
+                    <div class="day-route">卡帕多奇亞 ➔ 孔亞</div>
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">蘇丹哈尼古驛站（Sultanhani Kervansaray）</div>
+                    <div class="attraction-item">梅夫拉納博物館（Mevlana Museum）</div>
+                </div>
+                <div class="alert-banner">
+                    ⚠️ <strong>梅夫拉納博物館規範：</strong> 穿著相對自由，但整體不可過於暴露，若穿著短褲/短裙必須<strong>長過膝蓋</strong>。
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：飯店早餐</div>
+                    <div>🍽️ 午：鄂圖曼式鐵板料理 + 土式披薩</div>
+                    <div>🍽️ 晚：飯店內用晚餐</div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">6/30 (二) Day 6</div>
+                    <div class="day-route">孔亞 ➔ 阿斯班多斯 ➔ 安塔利亞</div>
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">古羅馬水道橋（Historic Aspendos Aqueduct）</div>
+                    <div class="attraction-item">阿斯班多斯大劇場（Aspendos Theater）</div>
+                    <div class="attraction-item">杜登瀑布公園（Duden Waterfalls）</div>
+                    <div class="attraction-item">舊城區卡雷吉（Kaleiçi）</div>
+                </div>
+                <div class="alert-banner">
+                    🚌 <strong>車程提醒：</strong> 今日車程較長，孔亞至阿斯班多斯拉車約 265 公里，可準備零食在車上食用。
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：飯店早餐</div>
+                    <div>🍽️ 午：地中海魚風味料理</div>
+                    <div>🍽️ 晚：飯店內用晚餐</div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">7/1 (三) Day 7</div>
+                    <div class="day-route">安塔利亞 ➔ 巴慕卡麗</div>
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">棉堡（Pamukkale）- 白色石灰岩階梯梯田</div>
+                    <div class="attraction-item">希拉波里斯古城遺址（Hierapolis）</div>
+                </div>
+                <div class="alert-banner">
+                    💡 <strong>棉堡溫泉泡湯提醒：</strong><br>
+                    1. 參觀棉堡可以脫鞋進入水池區（水深約到膝蓋），建議穿著<strong>寬鬆、容易捲起褲管的褲子</strong>，並自備一個小袋子放毛巾或擦腳後的拖鞋。<br>
+                    2. 晚上入住溫泉飯店，欲前往大眾地熱溫泉泡湯者，<strong>必須自備泳衣、泳褲、泳帽</strong>。
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：飯店早餐</div>
+                    <div>🍽️ 午：土式風味料理</div>
+                    <div>🍽️ 晚：飯店內用晚餐</div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">7/2 (四) Day 8</div>
+                    <div class="day-route">巴慕卡麗 ➔ 艾菲索斯 ➔ 庫薩達西</div>
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">艾菲索斯古城（Ephesus）- 世界文化遺產</div>
+                    <div class="attraction-item">土耳其皮衣工廠</div>
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：飯店早餐</div>
+                    <div>🍽️ 午：特殊土耳其在地料理</div>
+                    <div>🍽️ 晚：飯店內用晚餐</div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">7/3 (五) Day 9</div>
+                    <div class="day-route">庫薩達西 ➔ 伊茲密爾 ✈️ 伊斯坦堡</div>
+                </div>
+                <div class="flight-box">
+                    ✈️ <strong>中段國內線班機：土耳其航空 TK2313</strong><br>
+                    10:45 伊茲密爾出發 ➔ 12:05 抵達伊斯坦堡（省去長途拉車時間）
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">博斯普魯斯海峽遊船（整團專屬包船）</div>
+                    <div class="attraction-item">香料市集（Misir Carsisi）自由逛街</div>
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：飯店早餐</div>
+                    <div>🍽️ 午：海峽景觀餐廳～土式烤魚料理</div>
+                    <div>🍽️ 晚：<span class="self-paid">方便市集逛街，晚餐敬請自理【自理餐 2】</span></div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">7/4 (六) Day 10</div>
+                    <div class="day-route">伊斯坦堡 ➔ 機場</div>
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">巴拉特區（Balat）彩色文青街區</div>
+                    <div class="attraction-item">藍色清真寺（Sultan Ahmed Mosque）</div>
+                    <div class="attraction-item">聖索菲亞清真寺（Hagia Sophia）</div>
+                    <div class="attraction-item">蘇丹舊皇宮～托普卡匹皇宮（Topkapi Palace）</div>
+                    <div class="attraction-item">塔克辛廣場（Taksim Square）自由購物</div>
+                </div>
+                <div class="alert-banner strict">
+                    ⚠️ <strong>清真寺服儀端莊極嚴格規範（藍色清真寺/聖索菲亞）：</strong><br>
+                    服裝嚴格審查，請務必配合：<br>
+                    1. <strong>衣服限制：</strong> 衣服上<strong>絕對不能有人像或動物圖案</strong>，嚴禁緊身衣/緊身褲。<br>
+                    2. <strong>男生：</strong> 必須穿著<strong>長褲（需蓋過腳踝）</strong>。上衣可穿短袖，但需有袖。<br>
+                    3. <strong>女生：</strong> 必須穿著<strong>長袖（需蓋到手腕）</strong>，長裙或長褲不可開叉。且<strong>必須自備圍巾或絲巾</strong>，進入時完整包裹住頭髮與脖子。
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：飯店早餐</div>
+                    <div>🍽️ 午：中式料理（七菜一湯）</div>
+                    <div>🍽️ 晚：<span class="self-paid">方便廣場購物，晚餐敬請自理【自理餐 3】</span></div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">7/5 (日) Day 11</div>
+                    <div class="day-route">伊斯坦堡 ✈️ 桃園機場</div>
+                </div>
+                <div class="flight-box">
+                    ✈️ <strong>土耳其航空 TK024</strong><br>
+                    01:50 伊斯坦堡出發 ➔ 18:10 抵達台北桃園機場
+                </div>
+                <div class="attractions-list">
+                    <div class="attraction-item">凌晨由領隊協助於機場辦理登機出境手續</div>
+                    <div class="attraction-item">平安抵達台灣，結束愉快的土耳其世界遺產之旅</div>
+                </div>
+                <div class="meal-box">
+                    <div>🍽️ 早：機上</div>
+                    <div>🍽️ 午：機上</div>
+                    <div>🍽️ 晚：X</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="checklist" class="tab-content">
+            
+            <div class="checklist-section">
+                <h3>證件與重要財務</h3>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>護照正本</strong>
+                        <div class="check-desc">確認有效期限需在回國日算起 6 個月以上。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>美金現金 (需2009年以後版本)</strong>
+                        <div class="check-desc">行前務必檢查面額與發行年份，2009前版本當地拒收。用於支付小費、自費行程及換里拉。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>雙主流信用卡 (VISA + MASTER 各一張)</strong>
+                        <div class="check-desc">行前請先致電銀行辦理國外刷卡照會開通，並特別註記行程期間會於土耳其刷卡交易以免被鎖卡。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>預計兌換的土耳其里拉</strong>
+                        <div class="check-desc">建議落地後分批換，一次每人換約 50-100 美金等值里拉即可（應付上廁所、自理餐）。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <h3>特定景點特殊服飾需求</h3>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>【女生必備】清真寺圍巾 / 絲巾</strong>
+                        <div class="check-desc">Day 10 進入藍色清真寺與聖索菲亞清真寺必備，需能完整包裹頭髮。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>符合規範的長褲與有袖衣服</strong>
+                        <div class="check-desc">衣服不可有動物、人像圖案，不能太緊身。長褲需蓋過腳踝。Day 2 國父陵寢、Day 10 清真寺審查嚴格。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>小於 A4 大小的隨身側背包</strong>
+                        <div class="check-desc">Day 2 國父陵寢安檢嚴格，禁止攜帶厚重雙肩大包，建議改帶小側包。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>寬鬆、易捲褲管的長褲 (Day 7 棉堡專用)</strong>
+                        <div class="check-desc">棉堡下溫泉池水深及膝，寬鬆褲子方便捲起，並備小袋子裝擦腳毛巾。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>泳衣、泳褲、泳帽 三件套 (Day 7 飯店專用)</strong>
+                        <div class="check-desc">住棉堡溫泉飯店泡地熱溫泉大眾池必備，沒帶泳帽或泳衣無法下水。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <h3>日常生活與個人用品</h3>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>厚外套</strong>
+                        <div class="check-desc">當地日夜溫差極大（氣溫 10°C - 30°C），尤以卡帕多奇亞清晨搭熱氣球時最冷。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>牙刷、牙膏、個人拖鞋 / 紙拖鞋</strong>
+                        <div class="check-desc">響應環保，土耳其飯店多不提供一次性盥洗備品及拖鞋，務必自備。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>防曬三寶 (防曬乳、墨鏡、太陽帽)</strong>
+                        <div class="check-desc">土耳其夏季紫外線強烈，岩石地形反射明顯。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>高保濕用品 / 乳液</strong>
+                        <div class="check-desc">內陸氣候極度乾燥，需備妥個人護唇膏與保濕護膚品。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>個人隨身衛生紙 / 面紙</strong>
+                        <div class="check-desc">當地公共廁所與部分景點需自備衛生紙。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>折疊雨傘</strong>
+                        <div class="check-desc">防範突發天氣或遮陽使用。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <h3>電子與網路通訊</h3>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>歐規兩頭圓孔轉接頭 (電壓 220V)</strong>
+                        <div class="check-desc">土耳其使用德標/歐標雙圓頭插座，請勿帶延長線。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>行動電源 / 隨身鋰電池 (一律限隨身登機)</strong>
+                        <div class="check-desc">額定能量必須低於 100Wh。含有鋰電池之電子產品切勿放進托運行李。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>漫遊網路或 eSIM 準備</strong>
+                        <div class="check-desc">當地遊覽車上及飯店的免費 WiFi 訊號多數不佳，建議自行準備。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <h3>藥品與常備食品</h3>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>個人常備醫藥箱</strong>
+                        <div class="check-desc">感冒藥、止痛藥、腸胃藥、長途拉車必備的暈車藥。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>隨身零食、乾糧</strong>
+                        <div class="check-desc">土耳其幅員遼闊拉車時間長（如Day 6拉車265km），可帶餅乾車上吃。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>素食或海鮮泡麵 (絕對嚴禁肉製品)</strong>
+                        <div class="check-desc">可以準備適量泡麵，但海關查驗嚴謹，<strong>泡麵成分含肉或肉燥成分一律禁止攜帶</strong>。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <h3>行李規格與額外花費參考</h3>
+                <div class="check-item">
+                    <input type="checkbox">
+                    <div class="check-text">
+                        <strong>行李尺寸與重量確認</strong>
+                        <div class="check-desc">托運行李：單件長寬高總和低於 150cm，總重 30kg 以內。隨身手提：限 1 件且低於 8kg。</div>
+                    </div>
+                </div>
+                <div class="check-item">
+                    <div class="check-text">
+                        <strong>💰 預估行程額外個人花費與規費參考：</strong>
+                        <div class="cost-grid">
+                            <div class="cost-item">💵 司導領隊小費：132 美金 / 人</div>
+                            <div class="cost-item">💵 自費吉普車：100 美金 / 人</div>
+                            <div class="cost-item">🇹🇷 熱氣球機師小費：200 里拉 / 人</div>
+                            <div class="cost-item">💵 床頭與行李小費：每次 1 美金</div>
+                            <div class="cost-item">🇹🇷 公共廁所單次：約 20 里拉</div>
+                            <div class="cost-item">🇹🇷 自理餐單餐預估：約 800 里拉 (20美金)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        new Vue({
-            el: '#app',
-            data: {
-                currentTab: 'itinerary',
-                tabs: [
-                    { id: 'itinerary', name: '📅 每日行程' },
-                    { id: 'clothing', name: '👕 服裝建議' },
-                    { id: 'checklist', name: '✅ 檢查清單' }
-                ],
-                itinerary: [
-                    { date: '6/25(四)', day: 'Day 1', route: '桃園機場 → 伊斯坦堡', details: '航班：土耳其航空 TK025 (21:45-05:05+1)', laundry: false },
-                    { date: '6/26(五)', day: 'Day 2', route: '伊斯坦堡 → 安卡拉', details: '凱莫爾陵寢紀念館、安卡拉城堡', laundry: false },
-                    { date: '6/27(六)', day: 'Day 3', route: '安卡拉 → 鹽湖 → 卡帕多奇亞', details: '鹽湖、土耳其石展示中心。入住卡帕多奇亞洞穴飯店。', laundry: true, laundryReason: '今明兩晚連泊洞穴飯店，卡帕多奇亞氣候乾燥，手洗的衣服晾在房內或通風處，有兩晚的時間絕對能乾透。' },
-                    { date: '6/28(日)', day: 'Day 4', route: '卡帕多奇亞', details: '熱氣球之旅、奇岩怪石、哥樂美露天博物館、地下城、手工地毯工廠', laundry: false },
-                    { date: '6/29(一)', day: 'Day 5', route: '卡帕多奇亞 → 孔亞', details: '古驛站、梅夫拉納博物館', laundry: false },
-                    { date: '6/30(二)', day: 'Day 6', route: '孔亞 → 阿斯班多斯 → 安塔利亞', details: '長途車(265km)。古羅馬水道橋、阿斯班多斯大劇場、杜登瀑布、舊城區', laundry: false },
-                    { date: '7/1(三)', day: 'Day 7', route: '安塔利亞 → 巴慕卡麗', details: '長途車(236km)。棉堡、希拉波里斯古城遺址', laundry: false },
-                    { date: '7/2(四)', day: 'Day 8', route: '巴慕卡麗 → 艾菲索斯 → 庫薩達西', details: '長途車(183km)。艾菲索斯古城、皮衣工廠', laundry: false },
-                    { date: '7/3(五)', day: 'Day 9', route: '庫薩達西 → 伊茲密爾 ✈️ 伊斯坦堡', details: '國內航班(TK2313)。博斯普魯斯海峽遊船、香料市集', laundry: false },
-                    { date: '7/4(六)', day: 'Day 10', route: '伊斯坦堡 → 機場', details: '巴拉特區、藍色清真寺、聖索菲亞、托普卡匹皇宮、塔克辛廣場', laundry: false },
-                    { date: '7/5(日)', day: 'Day 11', route: '伊斯坦堡 → 桃園機場', details: '航班：土耳其航空 TK024 (01:50-18:10)', laundry: false }
-                ],
-                clothing: [
-                    { date: '6/25', day: 'Day 1', route: '桃園 → 伊斯坦堡', environment: '長途夜機，機艙冷氣較強。', advice: '寬鬆長褲 + 短袖T恤 + 薄防風外套/連帽衫。' },
-                    { date: '6/26', day: 'Day 2', route: '伊斯坦堡 → 安卡拉', environment: '抵達後轉往市區，氣候溫暖；陵寢需服儀端莊。', advice: '短袖上衣 + 休閒長褲或及膝短褲 + 好走的運動鞋。' },
-                    { date: '6/27', day: 'Day 3', route: '安卡拉 → 鹽湖 → 卡帕', environment: '鹽湖毫無遮蔽，紫外線極強。', advice: '短袖上衣 + 透氣長褲 + 墨鏡 + 寬沿遮陽帽。' },
-                    { date: '6/28', day: 'Day 4', route: '卡帕多奇亞', environment: '清晨高空極冷(10-15°C)，日出後飆高溫；岩區多步行。', advice: '洋蔥式穿法：排汗內衣 + 戶外機能防風外套(日出後脫下) + 耐髒戶外長/短褲。' },
-                    { date: '6/29', day: 'Day 5', route: '卡帕多奇亞 → 孔亞', environment: '參觀博物館（清真寺規定：禁短褲無袖）。', advice: '男士：長褲+有袖上衣。女士：需備頭巾包覆頭髮，衣物需遮蔽肩膀與膝蓋。' },
-                    { date: '6/30', day: 'Day 6', route: '孔亞 → 安塔利亞', environment: '地中海沿岸，極度炎熱且潮濕。', advice: '最涼爽的短袖/短褲 + 運動涼鞋或透氣鞋。' },
-                    { date: '7/1', day: 'Day 7', route: '安塔利亞 → 棉堡', environment: '石灰岩強烈反射陽光，規定赤腳行走。', advice: '短袖短褲 + 極度依賴墨鏡防曬帽 + 易穿脫涼拖鞋 + 隨身小毛巾。' },
-                    { date: '7/2', day: 'Day 8', route: '巴慕卡麗 → 艾菲索斯', environment: '古城佔地廣大且「完全沒有樹蔭」，易中暑。', advice: '排汗短袖短褲 + 輕薄抗 UV 防曬外套。' },
-                    { date: '7/3', day: 'Day 9', route: '庫薩達西 ✈️ 伊斯坦堡', environment: '國內線搭機，下午海峽遊船風大。', advice: '都會休閒服飾 + 重新拿出 Day1 的薄防風外套。' },
-                    { date: '7/4', day: 'Day 10', route: '伊斯坦堡', environment: '藍色清真寺、聖索菲亞（嚴格服儀規定）。', advice: '男女皆必須穿著遮蓋腳踝的透氣長褲。女性必須使用頭巾。' },
-                    { date: '7/5', day: 'Day 11', route: '伊斯坦堡 → 桃園', environment: '長途夜機返家。', advice: '換回 Day 1 的搭機舒適服裝。' }
-                ],
-                checklistCategories: [
-                    {
-                        name: '👕 衣物類',
-                        items: [
-                            { name: '短袖排汗衣 / T恤 (5-6件)', desc: '配合 Day 3 洗衣輪替穿著', checked: false },
-                            { name: '透氣長褲 (2-3件)', desc: '應付兩天的清真寺規定、搭機與防曬', checked: false },
-                            { name: '短褲 (2-3件)', desc: '適用於安塔利亞、棉堡等炎熱地區', checked: false },
-                            { name: '防風/保暖外套 (1件)', desc: '戶外機能型最佳，清晨熱氣球、遊船與機上用', checked: false },
-                            { name: '抗 UV 薄外套 (1件)', desc: '夏日古城區防曬必備', checked: false },
-                            { name: '貼身衣物與襪子 (5-6套)', desc: 'Day 3 進行洗滌', checked: false }
-                        ]
-                    },
-                    {
-                        name: '👟 鞋包與配件',
-                        items: [
-                            { name: '好走的運動鞋 (1雙)', desc: '應付多數地形與古城石板路', checked: false },
-                            { name: '涼鞋或拖鞋 (1雙)', desc: '棉堡穿脫必備', checked: false },
-                            { name: '太陽眼鏡', desc: '棉堡與鹽湖極度刺眼，必備', checked: false },
-                            { name: '寬沿遮陽帽', desc: '土耳其夏日防曬神器', checked: false },
-                            { name: '頭巾 / 薄披肩', desc: '女性專用，進入清真寺包覆頭髮與肩膀', checked: false },
-                            { name: '隨身小毛巾', desc: '棉堡泡水後擦腳用', checked: false }
-                        ]
-                    }
-                ]
+        // Tab switching logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Checklist local storage persistence logic
+        document.querySelectorAll('.check-item input[type="checkbox"]').forEach((checkbox, index) => {
+            const storageKey = 'turkey_trip_chk_' + index;
+            
+            // Load state from local storage
+            if (localStorage.getItem(storageKey) === 'true') {
+                checkbox.checked = true;
             }
+            
+            // Save state on toggle
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(storageKey, checkbox.checked);
+            });
         });
     </script>
 </body>
