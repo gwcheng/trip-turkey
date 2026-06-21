@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content_v3 = """<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -170,12 +170,41 @@
         .meal-box {
             background-color: #f8fafc;
             border-top: 1px dashed var(--border-color);
-            padding-top: 8px;
+            padding-top: 10px;
             margin-top: 12px;
             font-size: 14px;
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
+        }
+        
+        .hotel-box {
+            background-color: #f0fdf4;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--text-dark);
+            border: 1px solid #dcfce7;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hotel-box a {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            background: #e0f2fe;
+            padding: 3px 8px;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .hotel-box a:hover {
+            background: #bae6fd;
         }
 
         .self-paid {
@@ -297,13 +326,16 @@
     </header>
 
     <div class="tabs-container">
+        <!-- Tab Navigation -->
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="switchTab('itinerary')">📅 每日詳細行程</button>
             <button class="tab-btn" onclick="switchTab('checklist')">✅ 行前準備檢查清單</button>
         </div>
 
+        <!-- TAB 1: ITINERARY -->
         <div id="itinerary" class="tab-content active">
             
+            <!-- Day 1 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">6/25 (四) Day 1</div>
@@ -325,8 +357,12 @@
                     <div>🍽️ 午：X</div>
                     <div>🍽️ 晚：機上精緻餐點</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：機上
+                </div>
             </div>
 
+            <!-- Day 2 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">6/26 (五) Day 2</div>
@@ -348,8 +384,13 @@
                     <div>🍽️ 午：依行程安排風味餐</div>
                     <div>🍽️ 晚：飯店內用晚餐</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：Bilkent Hotel & Conference Center
+                    <a href="https://www.google.com/maps/search/?api=1&query=Bilkent+Hotel+%26+Conference+Center" target="_blank">🗺️ Google Maps 連結</a>
+                </div>
             </div>
 
+            <!-- Day 3 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">6/27 (六) Day 3</div>
@@ -364,8 +405,13 @@
                     <div>🍽️ 午：土式烤翅風味餐</div>
                     <div>🍽️ 晚：飯店內用晚餐</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：洞穴風格飯店 Exedra Hotel Cappadocia
+                    <a href="https://www.google.com/maps/search/?api=1&query=Exedra+Hotel+Cappadocia" target="_blank">🗺️ Google Maps 連結</a>
+                </div>
             </div>
 
+            <!-- Day 4 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">6/28 (日) Day 4</div>
@@ -386,8 +432,13 @@
                     <div>🍽️ 午：<span class="self-paid">方便遊玩，敬請自理【自理餐 1】</span></div>
                     <div>🍽️ 晚：飯店內用晚餐</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：洞穴風格飯店 Exedra Hotel Cappadocia
+                    <a href="https://www.google.com/maps/search/?api=1&query=Exedra+Hotel+Cappadocia" target="_blank">🗺️ Google Maps 連結</a>
+                </div>
             </div>
 
+            <!-- Day 5 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">6/29 (一) Day 5</div>
@@ -405,8 +456,13 @@
                     <div>🍽️ 午：鄂圖曼式鐵板料理 + 土式披薩</div>
                     <div>🍽️ 晚：飯店內用晚餐</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：Grand Hotel Konya
+                    <a href="https://www.google.com/maps/search/?api=1&query=Grand+Hotel+Konya" target="_blank">🗺️ Google Maps 連結</a>
+                </div>
             </div>
 
+            <!-- Day 6 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">6/30 (二) Day 6</div>
@@ -426,8 +482,13 @@
                     <div>🍽️ 午：地中海魚風味料理</div>
                     <div>🍽️ 晚：飯店內用晚餐</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：The Marmara Antalya
+                    <a href="https://www.google.com/maps/search/?api=1&query=The+Marmara+Antalya" target="_blank">🗺️ Google Maps 連結</a>
+                </div>
             </div>
 
+            <!-- Day 7 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">7/1 (三) Day 7</div>
@@ -447,8 +508,13 @@
                     <div>🍽️ 午：土式風味料理</div>
                     <div>🍽️ 晚：飯店內用晚餐</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：Pamukkale Kaya Thermal Spa Hotel
+                    <a href="https://www.google.com/maps/search/?api=1&query=Pamukkale+Kaya+Thermal+Spa+Hotel" target="_blank">🗺️ Google Maps 連結</a>
+                </div>
             </div>
 
+            <!-- Day 8 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">7/2 (四) Day 8</div>
@@ -463,8 +529,13 @@
                     <div>🍽️ 午：特殊土耳其在地料理</div>
                     <div>🍽️ 晚：飯店內用晚餐</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：Ramada Hotel & Suites Kuşadası
+                    <a href="https://www.google.com/maps/search/?api=1&query=Ramada+Hotel+%26+Suites+Kuşadası" target="_blank">🗺️ Google Maps 連結</a>
+                </div>
             </div>
 
+            <!-- Day 9 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">7/3 (五) Day 9</div>
@@ -483,8 +554,13 @@
                     <div>🍽️ 午：海峽景觀餐廳～土式烤魚料理</div>
                     <div>🍽️ 晚：<span class="self-paid">方便市集逛街，晚餐敬請自理【自理餐 2】</span></div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：DoubleTree by Hilton Piyalepasa
+                    <a href="https://www.google.com/maps/search/?api=1&query=DoubleTree+by+Hilton+Piyalepasa" target="_blank">🗺️ Google Maps 連結</a>
+                </div>
             </div>
 
+            <!-- Day 10 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">7/4 (六) Day 10</div>
@@ -509,8 +585,12 @@
                     <div>🍽️ 午：中式料理（七菜一湯）</div>
                     <div>🍽️ 晚：<span class="self-paid">方便廣場購物，晚餐敬請自理【自理餐 3】</span></div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：機上
+                </div>
             </div>
 
+            <!-- Day 11 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">7/5 (日) Day 11</div>
@@ -529,12 +609,17 @@
                     <div>🍽️ 午：機上</div>
                     <div>🍽️ 晚：X</div>
                 </div>
+                <div class="hotel-box">
+                    🏨 住宿：溫暖的家
+                </div>
             </div>
 
         </div>
 
+        <!-- TAB 2: CHECKLIST -->
         <div id="checklist" class="tab-content">
             
+            <!-- Section 1 -->
             <div class="checklist-section">
                 <h3>證件與重要財務</h3>
                 <div class="check-item">
@@ -567,6 +652,7 @@
                 </div>
             </div>
 
+            <!-- Section 2 -->
             <div class="checklist-section">
                 <h3>特定景點特殊服飾需求</h3>
                 <div class="check-item">
@@ -606,6 +692,7 @@
                 </div>
             </div>
 
+            <!-- Section 3 -->
             <div class="checklist-section">
                 <h3>日常生活與個人用品</h3>
                 <div class="check-item">
@@ -652,6 +739,7 @@
                 </div>
             </div>
 
+            <!-- Section 4 -->
             <div class="checklist-section">
                 <h3>電子與網路通訊</h3>
                 <div class="check-item">
@@ -677,6 +765,7 @@
                 </div>
             </div>
 
+            <!-- Section 5 -->
             <div class="checklist-section">
                 <h3>藥品與常備食品</h3>
                 <div class="check-item">
@@ -702,6 +791,7 @@
                 </div>
             </div>
 
+            <!-- Section 6 -->
             <div class="checklist-section">
                 <h3>行李規格與額外花費參考</h3>
                 <div class="check-item">
@@ -761,3 +851,10 @@
     </script>
 </body>
 </html>
+"""
+
+output_path_v3 = "turkey_itinerary_handbook-v3.html"
+with open(output_path_v3, "w", encoding="utf-8") as f:
+    f.write(html_content_v3)
+
+print(f"File saved successfully to {output_path_v3}")
