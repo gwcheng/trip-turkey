@@ -1,4 +1,4 @@
-html_content_v3 = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -74,10 +74,12 @@ html_content_v3 = """<!DOCTYPE html>
             border-bottom: 2px solid var(--border-color);
             margin-bottom: 16px;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
             flex: 1;
+            min-width: 150px;
             padding: 12px 8px;
             font-size: 16px;
             font-weight: 600;
@@ -108,7 +110,7 @@ html_content_v3 = """<!DOCTYPE html>
             display: block;
         }
 
-        /* Itinerary Styling */
+        /* Itinerary & Food Styling */
         .day-card {
             background: white;
             border-radius: 12px;
@@ -157,6 +159,35 @@ html_content_v3 = """<!DOCTYPE html>
             content: "📍";
             font-size: 14px;
         }
+        
+        .food-item {
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .food-item-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 15px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .food-item-price {
+            color: var(--accent-orange);
+            font-size: 13px;
+        }
+        
+        .food-item-desc {
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
 
         .flight-box {
             background-color: #f0f9ff;
@@ -178,7 +209,7 @@ html_content_v3 = """<!DOCTYPE html>
             gap: 12px;
         }
         
-        .hotel-box {
+        .hotel-box, .map-link-box {
             background-color: #f0fdf4;
             border-radius: 6px;
             padding: 8px 12px;
@@ -191,20 +222,29 @@ html_content_v3 = """<!DOCTYPE html>
             flex-wrap: wrap;
             gap: 8px;
         }
+        
+        .map-link-box {
+            background-color: #e0f2fe;
+            border-color: #bae6fd;
+            margin-top: 6px;
+            display: inline-flex;
+            padding: 4px 8px;
+        }
 
-        .hotel-box a {
+        .hotel-box a, .map-link-box a {
             color: var(--primary-dark);
             text-decoration: none;
             font-size: 12px;
             font-weight: 600;
-            background: #e0f2fe;
+            background: #fff;
             padding: 3px 8px;
             border-radius: 4px;
             transition: 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        .hotel-box a:hover {
-            background: #bae6fd;
+        .hotel-box a:hover, .map-link-box a:hover {
+            background: #f1f5f9;
         }
 
         .self-paid {
@@ -309,7 +349,7 @@ html_content_v3 = """<!DOCTYPE html>
         @media (max-width: 600px) {
             header h1 { font-size: 20px; }
             .day-header { flex-direction: column; gap: 4px; }
-            .tab-btn { font-size: 14px; padding: 10px 4px; }
+            .tab-btn { font-size: 14px; padding: 10px 4px; min-width: 100px; }
         }
     </style>
 </head>
@@ -329,24 +369,24 @@ html_content_v3 = """<!DOCTYPE html>
         <!-- Tab Navigation -->
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="switchTab('itinerary')">📅 每日詳細行程</button>
-            <button class="tab-btn" onclick="switchTab('checklist')">✅ 行前準備檢查清單</button>
+            <button class="tab-btn" onclick="switchTab('food')">🍽️ 自理餐美食指南</button>
+            <button class="tab-btn" onclick="switchTab('checklist')">✅ 行前準備清單</button>
         </div>
 
         <!-- TAB 1: ITINERARY -->
         <div id="itinerary" class="tab-content active">
-            
             <!-- Day 1 -->
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">6/25 (四) Day 1</div>
-                    <div class="day-route">桃園機場 ➔ 伊斯坦堡</div>
+                    <div class="day-route">桃園機場(二航) ➔ 伊斯坦堡</div>
                 </div>
                 <div class="flight-box">
                     ✈️ <strong>土耳其航空 TK025</strong><br>
-                    21:45 台北(桃園) 出發 ➔ 05:05 (+1日) 抵達伊斯坦堡
+                    21:45 台北桃園機場(二航) 出發 ➔ 05:05 (+1日) 抵達伊斯坦堡
                 </div>
                 <div class="attractions-list">
-                    <div class="attraction-item">於桃園機場第1航廈指定櫃檯 18:45 準時集合</div>
+                    <div class="attraction-item">於桃園機場第2航廈指定櫃檯 18:45 準時集合</div>
                     <div class="attraction-item">搭乘直飛班機前往土耳其，展開 11 天旅程</div>
                 </div>
                 <div class="alert-banner">
@@ -386,7 +426,7 @@ html_content_v3 = """<!DOCTYPE html>
                 </div>
                 <div class="hotel-box">
                     🏨 住宿：Bilkent Hotel & Conference Center
-                    <a href="https://www.google.com/maps/search/?api=1&query=Bilkent+Hotel+%26+Conference+Center" target="_blank">🗺️ Google Maps 連結</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Bilkent+Hotel+%26+Conference+Center" target="_blank">🗺️ Google Maps</a>
                 </div>
             </div>
 
@@ -407,7 +447,7 @@ html_content_v3 = """<!DOCTYPE html>
                 </div>
                 <div class="hotel-box">
                     🏨 住宿：洞穴風格飯店 Exedra Hotel Cappadocia
-                    <a href="https://www.google.com/maps/search/?api=1&query=Exedra+Hotel+Cappadocia" target="_blank">🗺️ Google Maps 連結</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Exedra+Hotel+Cappadocia" target="_blank">🗺️ Google Maps</a>
                 </div>
             </div>
 
@@ -419,7 +459,7 @@ html_content_v3 = """<!DOCTYPE html>
                 </div>
                 <div class="attractions-list">
                     <div class="attraction-item">熱氣球升空之旅（自費/視天候狀況而定）</div>
-                    <div class="attraction-item">奇岩怪石（駱駝岩、烏其沙、獵人谷）</div>
+                    <div class="attraction-item">奇岩怪石（駱駝岩、烏其沙、猎人谷）</div>
                     <div class="attraction-item">哥樂美露天博物館（Goreme Open Air Museum）</div>
                     <div class="attraction-item">凱馬克利地下城（Kaymakli Underground City）</div>
                     <div class="attraction-item">手工地毯工廠</div>
@@ -434,7 +474,7 @@ html_content_v3 = """<!DOCTYPE html>
                 </div>
                 <div class="hotel-box">
                     🏨 住宿：洞穴風格飯店 Exedra Hotel Cappadocia
-                    <a href="https://www.google.com/maps/search/?api=1&query=Exedra+Hotel+Cappadocia" target="_blank">🗺️ Google Maps 連結</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Exedra+Hotel+Cappadocia" target="_blank">🗺️ Google Maps</a>
                 </div>
             </div>
 
@@ -458,7 +498,7 @@ html_content_v3 = """<!DOCTYPE html>
                 </div>
                 <div class="hotel-box">
                     🏨 住宿：Grand Hotel Konya
-                    <a href="https://www.google.com/maps/search/?api=1&query=Grand+Hotel+Konya" target="_blank">🗺️ Google Maps 連結</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Grand+Hotel+Konya" target="_blank">🗺️ Google Maps</a>
                 </div>
             </div>
 
@@ -484,7 +524,7 @@ html_content_v3 = """<!DOCTYPE html>
                 </div>
                 <div class="hotel-box">
                     🏨 住宿：The Marmara Antalya
-                    <a href="https://www.google.com/maps/search/?api=1&query=The+Marmara+Antalya" target="_blank">🗺️ Google Maps 連結</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=The+Marmara+Antalya" target="_blank">🗺️ Google Maps</a>
                 </div>
             </div>
 
@@ -509,8 +549,8 @@ html_content_v3 = """<!DOCTYPE html>
                     <div>🍽️ 晚：飯店內用晚餐</div>
                 </div>
                 <div class="hotel-box">
-                    🏨 住宿：Pamukkale Kaya Thermal Spa Hotel
-                    <a href="https://www.google.com/maps/search/?api=1&query=Pamukkale+Kaya+Thermal+Spa+Hotel" target="_blank">🗺️ Google Maps 連結</a>
+                    🏨 住宿：Richmond Pamukkale Thermal Resort
+                    <a href="https://www.google.com/maps/search/?api=1&query=Richmond+Pamukkale+Thermal+Resort" target="_blank">🗺️ Google Maps</a>
                 </div>
             </div>
 
@@ -531,7 +571,7 @@ html_content_v3 = """<!DOCTYPE html>
                 </div>
                 <div class="hotel-box">
                     🏨 住宿：Ramada Hotel & Suites Kuşadası
-                    <a href="https://www.google.com/maps/search/?api=1&query=Ramada+Hotel+%26+Suites+Kuşadası" target="_blank">🗺️ Google Maps 連結</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Ramada+Hotel+%26+Suites+Kuşadası" target="_blank">🗺️ Google Maps</a>
                 </div>
             </div>
 
@@ -556,7 +596,7 @@ html_content_v3 = """<!DOCTYPE html>
                 </div>
                 <div class="hotel-box">
                     🏨 住宿：DoubleTree by Hilton Piyalepasa
-                    <a href="https://www.google.com/maps/search/?api=1&query=DoubleTree+by+Hilton+Piyalepasa" target="_blank">🗺️ Google Maps 連結</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=DoubleTree+by+Hilton+Piyalepasa" target="_blank">🗺️ Google Maps</a>
                 </div>
             </div>
 
@@ -594,11 +634,11 @@ html_content_v3 = """<!DOCTYPE html>
             <div class="day-card">
                 <div class="day-header">
                     <div class="day-title">7/5 (日) Day 11</div>
-                    <div class="day-route">伊斯坦堡 ✈️ 桃園機場</div>
+                    <div class="day-route">伊斯坦堡 ✈️ 桃園機場(二航)</div>
                 </div>
                 <div class="flight-box">
                     ✈️ <strong>土耳其航空 TK024</strong><br>
-                    01:50 伊斯坦堡出發 ➔ 18:10 抵達台北桃園機場
+                    01:50 伊斯坦堡出發 ➔ 18:10 抵達台北桃園機場(二航)
                 </div>
                 <div class="attractions-list">
                     <div class="attraction-item">凌晨由領隊協助於機場辦理登機出境手續</div>
@@ -615,8 +655,133 @@ html_content_v3 = """<!DOCTYPE html>
             </div>
 
         </div>
+        
+        <!-- TAB 2: FOOD GUIDE -->
+        <div id="food" class="tab-content">
+            <div class="alert-banner" style="margin-bottom: 20px;">
+                💡 <strong>匯率與預算提醒：</strong> 預算以 1 美金 ≈ 35 - 40 里拉估算，當地物價波動較大，請以現場實際價格為準。
+            </div>
 
-        <!-- TAB 2: CHECKLIST -->
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">【自理餐 1】Day 4 - 卡帕多奇亞 (哥樂美周邊)</div>
+                </div>
+                <p style="margin-bottom: 12px; font-size: 14px; color: #475569;">以洞穴風格和安納托利亞傳統料理聞名。必吃特色為<strong>陶罐烤肉（Testi Kebab）</strong>。</p>
+                
+                <h4 style="margin: 16px 0 8px 0; color: var(--primary-dark);">🍽️ 正餐與特色餐廳</h4>
+                <div class="food-item">
+                    <div class="food-item-title">Dibek Restaurant <span class="food-item-price">約 $25 - $35 USD</span></div>
+                    <div class="food-item-desc">位於哥樂美鎮中心，非常有名的傳統餐廳。可以體驗坐在土耳其傳統地毯坐墊上用餐，陶罐烤肉非常道地（建議提早預訂）。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Dibek+Restaurant+Goreme" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Pumpkin Göreme Restaurant <span class="food-item-price">約 $35 - $45 USD</span></div>
+                    <div class="food-item-desc">氣氛極佳的無菜單/套餐式餐廳，店內掛滿南瓜燈飾。食材新鮮，以精緻的土耳其家常菜為主。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Pumpkin+Goreme+Restaurant+and+Art+Gallery" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Topdeck Cave Restaurant <span class="food-item-price">約 $20 - $30 USD</span></div>
+                    <div class="food-item-desc">隱藏在小巷內的家族經營洞穴餐廳，提供美味的土耳其小菜（Meze）和燉肉料理，價格合理且口味溫馨。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Topdeck+Cave+Restaurant+Goreme" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+
+                <h4 style="margin: 20px 0 8px 0; color: var(--primary-dark);">🌯 街頭小吃與特色甜點</h4>
+                <div class="food-item">
+                    <div class="food-item-title">Nazar Börek & Cafe (手工煎餅) <span class="food-item-price">約 $5 - $8 USD</span></div>
+                    <div class="food-item-desc">阿姨現場擀麵皮現煎的土耳其傳統煎餅 (Gözleme)，推薦菠菜起司或馬鈴薯口味，配上一杯土耳其紅茶。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Nazar+Börek+%26+Cafe+Goreme" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Mydonose Cafe & Bistro (烤米布丁) <span class="food-item-price">約 $5 - $10 USD</span></div>
+                    <div class="food-item-desc">逛累了想吃甜的，這裡的土耳其烤米布丁 (Fırın Sütlaç) 非常美味，頂部微焦充滿濃郁奶香。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Mydonose+Cafe+%26+Bistro+Goreme" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">【自理餐 2】Day 9 - 伊斯坦堡 (香料市集)</div>
+                </div>
+                <p style="margin-bottom: 12px; font-size: 14px; color: #475569;">舊城區金角灣旁，街頭美食的一級戰區。必吃特色為<strong>烤魚三明治（Balık Ekmek）</strong>。</p>
+                
+                <h4 style="margin: 16px 0 8px 0; color: var(--primary-dark);">🍽️ 正餐與特色餐廳</h4>
+                <div class="food-item">
+                    <div class="food-item-title">Pandeli Restaurant <span class="food-item-price">約 $40 - $60 USD</span></div>
+                    <div class="food-item-desc">米其林必比登推薦的百年歷史名店。必點名菜「蘇丹的喜悅」（茄子泥佐燉牛肉），服裝建議休閒正裝。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Pandeli+Restaurant+Eminonu" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Hamdi Restaurant <span class="food-item-price">約 $30 - $45 USD</span></div>
+                    <div class="food-item-desc">如果想舒舒服服坐著看風景，這家餐廳擁有俯瞰金角灣的無敵視野，以種類繁多的美味烤肉（Kebab）聞名。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Hamdi+Restaurant+Eminonu" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+
+                <h4 style="margin: 20px 0 8px 0; color: var(--primary-dark);">🌯 街頭小吃與特色甜點</h4>
+                <div class="food-item">
+                    <div class="food-item-title">Tarihi Eminönü Balık Ekmek (烤魚船) <span class="food-item-price">約 $4 - $6 USD</span></div>
+                    <div class="food-item-desc">加拉達橋旁裝飾華麗的傳統船隻，買一份烤魚三明治坐在岸邊吃是最經典的在地體驗。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Tarihi+Eminonu+Balik+Ekmek" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">艾米諾努碼頭周邊小吃 (淡菜/芝麻圈) <span class="food-item-price">約 $1 - $4 USD</span></div>
+                    <div class="food-item-desc">紅色小餐車賣的鑲米淡菜 (Midye Dolma) 擠上檸檬汁一口吞，以及隨處可見的平民小吃芝麻圈 (Simit)。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Eminönü+Meydanı" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Karaköy Güllüoğlu (百年果仁蜜餅) <span class="food-item-price">約 $10 - $15 USD</span></div>
+                    <div class="food-item-desc">全土耳其最有名的 Baklava 專賣店！千層酥皮夾滿頂級開心果淋上糖漿，極甜但配上無糖紅茶非常過癮。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Karakoy+Gulluoglu" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Hafiz Mustafa 1864 (Sirkeci 總店) <span class="food-item-price">約 $8 - $15 USD</span></div>
+                    <div class="food-item-desc">香料市集附近，買土耳其軟糖和吃傳統甜點（如庫納法 Künefe）的最佳去處。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Hafiz+Mustafa+1864+Sirkeci" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">【自理餐 3】Day 10 - 伊斯坦堡 (塔克辛廣場)</div>
+                </div>
+                <p style="margin-bottom: 12px; font-size: 14px; color: #475569;">現代商業與流行文化中心，選擇多元。必吃特色為<strong>濕漢堡與串烤捲餅</strong>。</p>
+                
+                <h4 style="margin: 16px 0 8px 0; color: var(--primary-dark);">🍽️ 正餐與特色餐廳</h4>
+                <div class="food-item">
+                    <div class="food-item-title">Saray Muhallebicisi <span class="food-item-price">約 $15 - $25 USD</span></div>
+                    <div class="food-item-desc">獨立大道上的老字號餐廳，連鎖傳統乾淨飯堂。提供傳統雞肉飯以及非常正宗的土耳其牛奶布丁。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Saray+Muhallebicisi+Istiklal" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+
+                <h4 style="margin: 20px 0 8px 0; color: var(--primary-dark);">🌯 街頭小吃與特色甜點</h4>
+                <div class="food-item">
+                    <div class="food-item-title">Kızılkayalar Hamburger (濕漢堡) <span class="food-item-price">約 $3 - $6 USD</span></div>
+                    <div class="food-item-desc">「濕漢堡」創始名店。漢堡麵包浸滿特製番茄蒜味醬汁並在蒸箱中保溫，非常唰嘴的宵夜最愛。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Kizilkayalar+Hamburger+Taksim" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Dürümzade (烤肉捲餅) <span class="food-item-price">約 $6 - $10 USD</span></div>
+                    <div class="food-item-desc">美食家安東尼·波登推薦！隱藏在巷弄裡，餅皮烤得酥脆、肉汁豐富的高CP值平民美食。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Durumzade+Istanbul" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Şampiyon Kokoreç (炭烤羊腸包) <span class="food-item-price">約 $6 - $10 USD</span></div>
+                    <div class="food-item-desc">將處理乾淨的羊腸炭烤切碎夾入麵包，香氣撲鼻無腥味。不敢吃羊腸也可點炸淡菜串夾麵包。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Şampiyon+Kokoreç+Taksim" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Viyana Kahvesi Galata (巴斯克蛋糕) <span class="food-item-price">約 $8 - $12 USD</span></div>
+                    <div class="food-item-desc">近年最紅的網美甜點！剛出爐的巴斯克乳酪蛋糕，店員會在桌邊淋上熱熔比利時巧克力醬。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Viyana+Kahvesi+Galata" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+                <div class="food-item">
+                    <div class="food-item-title">Mado 獨立大道店 (牽絲冰淇淋) <span class="food-item-price">約 $4 - $8 USD</span></div>
+                    <div class="food-item-desc">土耳其最知名的連鎖甜點。使用羊奶製作的 Maraş 冰淇淋黏性極強，店員不會戲弄客人，可舒適內用。</div>
+                    <div class="map-link-box"><a href="https://www.google.com/maps/search/?api=1&query=Mado+Istiklal+Caddesi" target="_blank">🗺️ Google Maps</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: CHECKLIST -->
         <div id="checklist" class="tab-content">
             
             <!-- Section 1 -->
@@ -851,10 +1016,3 @@ html_content_v3 = """<!DOCTYPE html>
     </script>
 </body>
 </html>
-"""
-
-output_path_v3 = "turkey_itinerary_handbook-v3.html"
-with open(output_path_v3, "w", encoding="utf-8") as f:
-    f.write(html_content_v3)
-
-print(f"File saved successfully to {output_path_v3}")
